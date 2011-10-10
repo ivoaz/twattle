@@ -1,0 +1,9 @@
+[submodule "vendor/Symfony/Component/ClassLoader"]
+	path = vendor/Symfony/Component/ClassLoader
+	url = https://github.com/symfony/ClassLoader.git
+[submodule "vendor/symfony/src/Symfony/Component/ClassLoader"]
+	path = vendor/symfony/src/Symfony/Component/ClassLoader
+	url = https://github.com/symfony/ClassLoader.git
+[submodule "vendor/pimple"]
+	path = vendor/pimple
+	url = https://github.com/fabpot/Pimple.git
