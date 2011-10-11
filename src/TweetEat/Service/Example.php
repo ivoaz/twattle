@@ -19,8 +19,6 @@ class Example implements ServiceInterface
 
     /**
      * Runs the service
-     *
-     * @param \Pimple $container
      */
     public function run()
     {
