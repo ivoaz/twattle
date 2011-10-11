@@ -6,10 +6,12 @@ if (!isset($argv[1])) {
 
 require_once __DIR__.'/bootstrap.php';
 
-use TweetEat\DependencyInjection\ServiceContainer;
+use TweetEat\DependencyInjection\Container;
 use TweetEat\Service\ServiceInterface;
 
-$container = new ServiceContainer();
+$container = new Container(array(
+    'root_dir' => __DIR__.'/..',
+));
 
 $serviceName = $argv[1];
 
