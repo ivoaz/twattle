@@ -7,3 +7,6 @@
 [submodule "vendor/pimple"]
 	path = vendor/pimple
 	url = https://github.com/fabpot/Pimple.git
+[submodule "vendor/phirehose"]
+	path = vendor/phirehose
+	url = https://github.com/fennb/phirehose.git

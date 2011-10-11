@@ -1,19 +1,24 @@
 <?php
 
-require_once __DIR__.'/../vendor/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
-require_once __DIR__.'/../vendor/pimple/lib/Pimple.php';
+$src    = __DIR__.'/../src';
+$vendor = __DIR__.'/../vendor';
+
+require_once $vendor.'/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
 
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 $loader = new UniversalClassLoader();
 
 $loader->registerNamespaces(array(
-    'TweetEat' => __DIR__.'/../src',
-    'Symfony'  => __DIR__.'/../vendor/symfony/src',
+    'TweetEat' => $src,
+    'Symfony'  => $vendor.'/symfony/src',
 ));
 
-$loader->registerNamespaceFallbacks(array(
-    __DIR__.'/../vendor/pimple/lib',
+$loader->registerPrefixes(array(
+    'Pimple'              => $vendor.'/pimple/lib',
+    'Phirehose'           => $vendor.'/phirehose/lib',
+    'OauthPhirehose'      => $vendor.'/phirehose/lib',
+    'UserstreamPhirehose' => $vendor.'/phirehose/lib',
 ));
 
 $loader->register();
