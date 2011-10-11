@@ -32,7 +32,7 @@ class Container extends \Pimple
         // configure services
         $services = parse_ini_file($config['root_dir'].'/app/config/services.ini', true);
         foreach ($services as $name => $info) {
-            $this[$name] = function ($c) use ($info) {
+            $callback = function ($c) use ($info) {
                 if (isset($info['arguments'])) {
                     foreach ($info['arguments'] as $key => $argument) {
                         $length = strlen($argument);
@@ -49,6 +49,12 @@ class Container extends \Pimple
                 }
 
             };
+
+            if (isset($info['shared']) && $info['shared']) {
+                $callback = $this->share($callback);
+            }
+
+            $this[$name] = $callback;
         }
     }
 }
