@@ -47,7 +47,6 @@ class Container extends \Pimple
                 else {
                     return new $info['class'];
                 }
-
             };
 
             if (isset($info['shared']) && $info['shared']) {
