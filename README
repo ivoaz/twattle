@@ -1,5 +1,5 @@
 To add new service:
-1. Create a new class in src/TweetEat/Service/<service_name>.php
+1. Create a new class in src/TweetEat/Service/<ServiceName>.php
 2. Add it to the service container in src/TweetEat/DependencyInjection/ServiceContainer.php
 
 To run the service, enter the following in the commandline:
