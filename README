@@ -1,4 +1,4 @@
-To add new service:
+To add a new service:
 1. Create a new class in src/TweetEat/Service/<ServiceName>.php
 2. Add it to the service container in src/TweetEat/DependencyInjection/ServiceContainer.php
 
