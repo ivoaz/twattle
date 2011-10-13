@@ -1,0 +1,9 @@
+[tweeteat]
+    project_name = TweetEat
+
+[twitter_api]
+    username = ""
+    password = ""
+
+[streamline_collector]
+    keywords = apple,dell,acer

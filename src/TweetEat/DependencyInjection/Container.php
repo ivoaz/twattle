@@ -17,8 +17,8 @@ class Container extends \Pimple
 
         // configure config container
         $this['config'] = $this->share(function ($c) use ($config) {
-            $userConfig = parse_ini_file($config['root_dir'].'/app/config/config.ini');
-            $config = array_merge($userConfig, $config);
+            $userConfig = parse_ini_file($config['root_dir'].'/app/config/config.ini', true);
+            $config = array_merge_recursive($userConfig, $config);
             
             $container = new \Pimple();
 

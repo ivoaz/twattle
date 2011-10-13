@@ -22,6 +22,6 @@ class Example implements ServiceInterface
      */
     public function run()
     {
-        echo 'This is ', $this->container['config']['project_name'] . ".\n";
+        echo 'This is ', $this->container['config']['tweeteat']['project_name'] . ".\n";
     }
 }
