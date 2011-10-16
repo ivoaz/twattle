@@ -12,7 +12,7 @@ class Mongo
     private $db;
 
     /**
-     * @param \MongoDB $container
+     * @param \MongoDB $db
      */
     public function __construct(\MongoDB $db)
     {
