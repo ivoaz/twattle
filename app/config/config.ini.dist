@@ -5,3 +5,9 @@
     api_username = ""
     api_password = ""
     streamline_keywords = apple,dell,acer
+
+[mongodb]
+    server = "localhost"
+    username = ""
+    password = ""
+    database = "tweeteat"
