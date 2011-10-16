@@ -1,6 +1,1 @@
-To add a new service:
-1. Create a new class in src/TweetEat/Service/<ServiceName>.php by implementing ServiceInterface.
-2. Add it to the service config in app/config/services.ini
-
-To run the service, from the project's root directory enter the following in the command line with the service name as configured in services.ini:
-$ php app/run <service_name>
+The documentation can be found at https://github.com/ivoaz/tweeteat/wiki
