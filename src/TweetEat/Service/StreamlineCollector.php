@@ -23,14 +23,13 @@ class StreamlineCollector implements ServiceInterface
     /**
      * Runs the service
      */
-    public function run($parameters = array())
+    public function run()
     {
-        $config = $this->container['config'];
+        $username = $this->container['twitter_api_username'];
+        $password = $this->container['twitter_api_password'];
+        $keywords = $this->container['twitter_streamline_keywords'];
 
-        $username = $config['twitter_api']['username'];
-        $password = $config['twitter_api']['password'];
-
-        $dir = $config['root_dir'].'/data/tweets';
+        $dir = $this->container['sys_root_dir'].'/data/tweets';
         if (!file_exists($dir)) {
             if (!mkdir($dir, 0777, true)) {
                 throw new \Exception('Can\'t create directory ' . $dir . ' for storing tweets.');
@@ -41,7 +40,7 @@ class StreamlineCollector implements ServiceInterface
 
         $streamline = new FilterStreamline($username, $password, $collector);
         
-        $streamline->setTrack(explode(',', $config['streamline_collector']['keywords']));
+        $streamline->setTrack(explode(',', $keywords));
 
         $streamline->consume();
     }

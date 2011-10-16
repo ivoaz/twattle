@@ -5,32 +5,38 @@ namespace TweetEat\DependencyInjection;
 class Container extends \Pimple
 {
     /**
-     * @param array $config
+     * @param array $parameters
      */
-    public function __construct($config)
+    public function __construct($parameters = array())
     {
+        // reference container for possibility to inject services with it
         $this['container'] = $this;
 
-        if (!isset($config['root_dir'])) {
-            $config['root_dir'] = __DIR__.'/../../..';
+        // set root directory
+        if (!isset($parameters['sys_root_dir'])) {
+            $parameters['root_dir'] = __DIR__.'/../../..';
         }
 
-        // configure config container
-        $this['config'] = $this->share(function ($c) use ($config) {
-            $userConfig = parse_ini_file($config['root_dir'].'/app/config/config.ini', true);
-            $config = array_merge_recursive($userConfig, $config);
-            
-            $container = new \Pimple();
-
-            foreach ($config as $parameter => $value) {
-                $container[$parameter] = $value;
+        // import parameters from config
+        $config = parse_ini_file($parameters['sys_root_dir'].'/app/config/config.ini', true);
+        foreach ($config as $domain => $params) {
+            if (is_array($params)) {
+                foreach ($params as $name => $value) {
+                    $this[$domain.'_'.$name] = $value;
+                }
             }
+            else {
+                $this[$domain] = $params;
+            }
+        }
 
-            return $container;
-        });
+        // import parameters from arguments
+        foreach ($parameters as $name => $value) {
+            $this[$name] = $value;
+        }
 
-        // configure services
-        $services = parse_ini_file($config['root_dir'].'/app/config/services.ini', true);
+        // import services
+        $services = parse_ini_file($parameters['sys_root_dir'].'/app/config/services.ini', true);
         foreach ($services as $name => $info) {
             $callback = function ($c) use ($info) {
                 if (isset($info['arguments'])) {

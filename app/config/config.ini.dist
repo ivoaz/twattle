@@ -1,9 +1,7 @@
-[tweeteat]
+[app]
     project_name = TweetEat
 
-[twitter_api]
-    username = ""
-    password = ""
-
-[streamline_collector]
-    keywords = apple,dell,acer
+[twitter]
+    api_username = ""
+    api_password = ""
+    streamline_keywords = apple,dell,acer

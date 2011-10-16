@@ -10,7 +10,7 @@ use TweetEat\DependencyInjection\Container;
 use TweetEat\Service\ServiceInterface;
 
 $container = new Container(array(
-    'root_dir' => __DIR__.'/..',
+    'sys_root_dir' => __DIR__.'/..',
 ));
 
 $serviceName = $argv[1];
