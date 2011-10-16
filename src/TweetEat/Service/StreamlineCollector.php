@@ -2,7 +2,7 @@
 
 namespace TweetEat\Service;
 
-use TweetEat\Collector\FileCollector;
+use TweetEat\Collector\MongoCollector;
 use TweetEat\Streamline\FilterStreamline;
 
 class StreamlineCollector implements ServiceInterface
@@ -36,12 +36,12 @@ class StreamlineCollector implements ServiceInterface
             }
         }
 
-        $collector = new FileCollector($dir.'/'.date('YmdHis'));
+        $database = $this->container['database'];
+        $collection = $database->getTweetCollection();
+        $collector = new MongoCollector($collection);
 
         $streamline = new FilterStreamline($username, $password, $collector);
-        
         $streamline->setTrack(explode(',', $keywords));
-
         $streamline->consume();
     }
 }
