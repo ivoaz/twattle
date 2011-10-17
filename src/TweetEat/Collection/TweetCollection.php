@@ -30,16 +30,6 @@ class TweetCollection
      */
     public function insert($tweet)
     {
-        if (is_array($tweet)) {
-            $tweet['_id'] = $tweet['id_str'];
-        }
-        elseif (is_object($tweet)) {
-            $tweet->_id = $tweet->id_str;
-        }
-        else {
-            throw new \Exception('Invalid datatype of tweet, array or object expected.');
-        }
-
         $this->collection->insert($tweet);
     }
 }

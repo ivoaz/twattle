@@ -24,7 +24,13 @@ class MongoCollector
      */
     public function process($data)
     {
-        $tweet = json_decode($data);
+        $tweet = array(
+            'original' => json_decode($data, true),
+            'collected_at' => time(),
+        );
+        
+        $tweet['_id'] = $tweet['original']['id'];
+        
         $this->collection->insert($tweet);
     }
 }
