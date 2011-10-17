@@ -26,7 +26,7 @@ class MongoCollector
     {
         $tweet = array(
             'original' => json_decode($data, true),
-            'collected_at' => time(),
+            'collected_at' => new \MongoDate(),
         );
         
         $tweet['_id'] = $tweet['original']['id'];
