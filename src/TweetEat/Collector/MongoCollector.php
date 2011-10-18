@@ -30,7 +30,7 @@ class MongoCollector
         );
 
         if (!isset($tweet['original']['id'])) {
-            @error_log('TweetEat/Collector/MongoCollector: Got tweet without id, skipping.', 0);
+            // can't collect tweet without id
             return;
         }
         
