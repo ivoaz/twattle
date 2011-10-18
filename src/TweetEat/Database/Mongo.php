@@ -24,6 +24,12 @@ class Mongo
      */
     public function getTweetCollection()
     {
-        return new Collection\TweetCollection($this->db->tweets);
+        static $collection;
+
+        if (null === $collection) {
+            $collection = new Collection\TweetCollection($this->db->tweets);
+        }
+
+        return $collection;
     }
 }
