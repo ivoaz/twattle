@@ -26,6 +26,15 @@ class ProductCollection
     }
 
     /**
+     * @return \MongoCursor
+     */
+    public function findKeywords()
+    {
+        $result = $this->collection->db->command(array('distinct' => 'products', 'key' => 'keywords'));
+        return $result['values'];
+    }
+    
+    /**
      * @param array|object $product
      */
     public function insert($product)

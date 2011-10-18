@@ -1,0 +1,18 @@
+<?php
+
+if (!isset($argv[1])) {
+    exit("Please enter the name of the script you want to run.\n");
+}
+
+require_once __DIR__.'/../app/bootstrap.php';
+
+use TweetEat\DependencyInjection\Container;
+use TweetEat\Service\ServiceInterface;
+
+$container = new Container(array(
+    'sys_root_dir' => __DIR__.'/..',
+));
+
+if ((@include_once $argv[1]) != 'OK' && (@include_once $argv[1].'.php') != 'OK') {
+    exit("Could not run {$argv[1]} script, check that the script exists.\n");
+}
