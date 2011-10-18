@@ -28,6 +28,11 @@ class MongoCollector
             'original' => json_decode($data, true),
             'collected_at' => new \MongoDate(),
         );
+
+        if (!isset($tweet['original']['id'])) {
+            @error_log('TweetEat/Collector/MongoCollector: Got tweet without id, skipping.', 0);
+            return;
+        }
         
         $tweet['_id'] = $tweet['original']['id'];
         
