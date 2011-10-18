@@ -32,4 +32,18 @@ class Mongo
 
         return $collection;
     }
+
+    /**
+     * @return Collection\ProductCollection;
+     */
+    public function getProductCollection()
+    {
+        static $collection;
+
+        if (null === $collection) {
+            $collection = new Collection\ProductCollection($this->db->products);
+        }
+
+        return $collection;
+    }
 }
