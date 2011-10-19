@@ -1,0 +1,26 @@
+{
+    "positiveKeywords": {
+        "en": [
+            "good",
+            "like",
+            "liked",
+            "cool",
+            "hot",
+            "impressive"
+        ],
+        "lv": [],
+        "ru": []
+    },
+    "negativeKeywords": {
+        "en": [
+            "bad",
+            "hate",
+            "not working",
+            "disaster",
+            "hating",
+            "awful"
+        ],
+        "lv": [],
+        "ru": []
+    }
+}
