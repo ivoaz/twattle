@@ -1,14 +1,17 @@
 <?php
 
-use TweetEat\Database\Mongo as Database;
+require_once(__DIR__.'/../app/bootstrap.php');
+
+use TweetEat\DependencyInjection\Container;
 use TweetEat\Collector\MongoCollector;
 use TweetEat\Streamline\FilterStreamline;
 
-$username = $container['twitter_api_username'];
-$password = $container['twitter_api_password'];
+$container = new Container();
 
-/* @var $database Database */
-$database = $container['database'];
+$username = $container['twitter.api_username'];
+$password = $container['twitter.api_password'];
+
+$database = $container->getDatabase();
 
 $collector = new MongoCollector($database->getTweetCollection());
 

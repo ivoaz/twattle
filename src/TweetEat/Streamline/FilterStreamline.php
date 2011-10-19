@@ -18,7 +18,7 @@ class FilterStreamline extends \Phirehose
     }
 
     /**
-     * @param type $status
+     * @param string $status
      */
     public function enqueueStatus($status)
     {

@@ -1,10 +1,9 @@
 [app]
-    project_name = TweetEat
+    name = TweetEat
 
 [twitter]
     api_username = ""
     api_password = ""
-    streamline_keywords = apple,dell,acer
 
 [mongodb]
     server = "localhost"

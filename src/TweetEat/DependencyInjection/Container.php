@@ -9,24 +9,21 @@ class Container extends \Pimple
      */
     public function __construct($parameters = array())
     {
-        // reference container for possibility to inject services with it
-        $this['container'] = $this;
-
         // set root directory
-        if (!isset($parameters['sys_root_dir'])) {
-            $parameters['root_dir'] = __DIR__.'/../../..';
+        if (!isset($parameters['sys.root_dir'])) {
+            $parameters['sys.root_dir'] = __DIR__.'/../../..';
         }
 
         // import parameters from config
-        $config = parse_ini_file($parameters['sys_root_dir'].'/app/config/config.ini', true);
-        foreach ($config as $domain => $params) {
-            if (is_array($params)) {
-                foreach ($params as $name => $value) {
-                    $this[$domain.'_'.$name] = $value;
+        $config = parse_ini_file($parameters['sys.root_dir'].'/app/config/config.ini', true);
+        foreach ($config as $domain => $param) {
+            if (is_array($param)) {
+                foreach ($param as $name => $value) {
+                    $this[$domain.'.'.$name] = $value;
                 }
             }
             else {
-                $this[$domain] = $params;
+                $this[$domain] = $param;
             }
         }
 
@@ -35,38 +32,11 @@ class Container extends \Pimple
             $this[$name] = $value;
         }
 
-        // import services from config
-        $services = parse_ini_file($parameters['sys_root_dir'].'/app/config/services.ini', true);
-        foreach ($services as $name => $info) {
-            $callback = function ($c) use ($info) {
-                if (isset($info['arguments'])) {
-                    foreach ($info['arguments'] as $key => $argument) {
-                        $length = strlen($argument);
-                        if ($length > 2 && $argument[0] == '%' && $argument[$length-1] == '%') {
-                            $info['arguments'][$key] = $c[substr($argument, 1, $length-2)];
-                        }
-                    }
-
-                    $r = new \ReflectionClass($info['class']);
-                    return $r->newInstanceArgs($info['arguments']);
-                }
-                else {
-                    return new $info['class'];
-                }
-            };
-
-            if (isset($info['shared']) && $info['shared']) {
-                $callback = $this->share($callback);
-            }
-
-            $this[$name] = $callback;
-        }
-
         // register mongodb
         $this['mongodb'] = $this->share(function ($c) {
-            $database = $c['mongodb_database'];
-            $username = $c['mongodb_username'];
-            $password = $c['mongodb_password'];
+            $database = $c['mongodb.database'];
+            $username = $c['mongodb.username'];
+            $password = $c['mongodb.password'];
 
             $options = array();
 
@@ -75,8 +45,21 @@ class Container extends \Pimple
                 $options['password'] = $password;
             }
             
-            $conn = new \Mongo($c['mongodb_server'], $options);
+            $conn = new \Mongo($c['mongodb.server'], $options);
             return $conn->$database;
         });
+
+        // register database
+        $this['database'] = $this->share(function ($c) {
+            return new \TweetEat\Database\Mongo($c['mongodb']);
+        });
+    }
+
+    /**
+     * @return \TweetEat\Database\Mongo
+     */
+    public function getDatabase()
+    {
+        return $this->offsetGet('database');
     }
 }
