@@ -26,18 +26,18 @@ class TweetCollection
     }
 
     /**
-     * Finds all tweets with undeterminated subject
+     * Finds all tweets with undetermined object
      *
      * @return \MongoCursor
      */
-    public function findWithoutSubject()
+    public function findWithUndeterminedObject()
     {
         return $this->collection->find(array(
             '$or' => array(
-                array('subjects' => array(
+                array('objects' => array(
                     '$exists' => false,
                 )),
-                array('subjects' => array(
+                array('objects' => array(
                     '$size' => 0,
                 )),
             ),
@@ -45,17 +45,17 @@ class TweetCollection
     }
 
     /**
-     * Finds all tweets with undeterminated mood for subjects
+     * Finds all tweets with undetermined sentiment
      *
      * @return \MongoCursor
      */
-    public function findWithoutMood()
+    public function findWithUndeterminedSentiment()
     {
         return $this->collection->find(array(
-            'subjects' => array(
+            'objects' => array(
                 '$exists' => true,
             ),
-            'subjects.mood' => array(
+            'objects.sentiment' => array(
                 '$exists' => false,
             ),
         ));
@@ -80,38 +80,38 @@ class TweetCollection
     }
 
     /**
-     * Update tweets mood for subject
+     * Update tweets sentiment for object
      *
      * @param float $tweetId
-     * @param mixed $subjectId
+     * @param mixed $objectId
      * @param int $value
      */
-    public function updateMood($tweetId, $subjectId, $value)
+    public function updateSentiment($tweetId, $objectId, $value)
     {
         $this->collection->update(array(
             '_id' => $tweetId,
-            'subjects._id' => $subjectId
+            'objects._id' => $tweetId
         ), array(
             '$set' => array(
-                'subjects.$.mood.value' => $value,
-                'subjects.$.mood.determinated_at' => new \MongoDate,
+                'objects.$.sentiment.value' => $value,
+                'objects.$.sentiment.determined_at' => new \MongoDate,
             )
         ));
     }
 
     /**
-     * Add subject to the set of tweet subjects
+     * Add object to the set of tweet object
      *
      * @param type $tweetId
-     * @param type $subject
+     * @param type $object
      */
-    public function addSubject($tweetId, $subject)
+    public function addObject($tweetId, $object)
     {
         $this->collection->update(array(
             '_id' => $tweetId,
         ), array(
             '$addToSet' => array(
-                'subjects' => $subject,
+                'objects' => $object,
             ),
         ));
     }

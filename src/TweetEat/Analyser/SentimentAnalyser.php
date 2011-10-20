@@ -2,7 +2,7 @@
 
 namespace TweetEat\Analyser;
 
-class MoodAnalyser
+class SentimentAnalyser
 {
     protected $positiveKeywords;
     protected $negativeKeywords;
@@ -23,13 +23,13 @@ class MoodAnalyser
     }
 
     /**
-     * Analyses mood of the given text
+     * Analyses sentiment of the given text
      *
      * @param string $text
      * @param string $lang
      * @return int valuation of tweet in percents (can be negative)
      */
-    public function analyseMood($text, $lang)
+    public function analyse($text, $lang)
     {
         if (empty($this->positiveKeywords->$lang) || empty($this->negativeKeywords->$lang)) {
             throw new \Exception("There are no keywords for the following language: $lang.");

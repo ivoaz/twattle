@@ -11,7 +11,7 @@ $database = $container->getDatabase();
 $products = iterator_to_array($database->getProductCollection()->findAll());
 
 do {
-    $tweets = $database->getTweetCollection()->findWithoutSubject();
+    $tweets = $database->getTweetCollection()->findWithUndeterminedObject();
 
     foreach ($tweets as $tweet) {
         if (!isset($tweet['original']['text'])) {
@@ -30,19 +30,19 @@ do {
             }
 
             if ($matched) {
-                $subject = array(
+                $object = array(
                     '_id' => $product['_id'],
                     'type' => 'product',
                 );
 
-                $tweet['subjects'][] = $subject;
+                $tweet['objects'][] = $object;
 
-                $database->getTweetCollection()->addSubject($tweet['_id'], $subject);
+                $database->getTweetCollection()->addObject($tweet['_id'], $object);
             }
         }
 
-        if (!isset($tweet['subjects'])) {
-            // subject could not be determinated, delete tweet
+        if (!isset($tweet['objects'])) {
+            // object could not be determined, delete tweet
             $database->getTweetCollection()->remove($tweet['_id']);
         }
     }
