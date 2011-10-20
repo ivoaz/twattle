@@ -1,3 +1,5 @@
 /nbproject/private/
 /app/config/config.ini
-
+.project
+.buildpath
+.settings/

@@ -38,7 +38,7 @@ class SentimentAnalyser
         $positivePreg = $this->convertToPreg($this->positiveKeywords->$lang);
         $negativePreg = $this->convertToPreg($this->negativeKeywords->$lang);
 
-        // positive or negative tweet valuation, measured in precent
+        // positive or negative tweet valuation, measured in percent
         $valuation = 0;
 
         $valuation += preg_match_all($positivePreg, $text, $matches) * 25;
