@@ -49,7 +49,7 @@ Determining object
 
 Run the object determination script
 
-    php cli/determinate_object.php
+    php cli/determine_object.php
 
 
 Determining sentiment
@@ -57,4 +57,4 @@ Determining sentiment
 
 Run the sentiment determination script
 
-    php cli/determinate_sentiment.php
+    php cli/determine_sentiment.php
