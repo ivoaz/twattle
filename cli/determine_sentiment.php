@@ -22,8 +22,6 @@ do {
                 'value' => $analyser->analyse($tweet['original']['text'], 'en'),
             );
 
-            var_dump($object['sentiment']['value']);
-
             $collection->updateSentiment($tweet['_id'], $object['_id'], $object['sentiment']['value']);
         }
     }
