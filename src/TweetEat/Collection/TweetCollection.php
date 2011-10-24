@@ -84,17 +84,18 @@ class TweetCollection
      *
      * @param float $tweetId
      * @param mixed $objectId
-     * @param int $value
+     * @param array $sentiment
      */
-    public function updateSentiment($tweetId, $objectId, $value)
+    public function updateSentiment($tweetId, $objectId, $sentiment)
     {
+        $sentiment['determined_at'] = new \MongoDate();
+        
         $this->collection->update(array(
             '_id' => $tweetId,
-            'objects._id' => $tweetId
+            'objects._id' => $objectId
         ), array(
             '$set' => array(
-                'objects.$.sentiment.value' => $value,
-                'objects.$.sentiment.determined_at' => new \MongoDate,
+                'objects.$.sentiment' => $sentiment
             )
         ));
     }
