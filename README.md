@@ -53,8 +53,14 @@ Run the object determination script
 
 
 Determining sentiment
-------------------
+---------------------
 
 Run the sentiment determination script
 
     php cli/determine_sentiment.php
+
+Viewing statistics
+------------------
+
+Run the statistics script
+    php cli/stats.php
