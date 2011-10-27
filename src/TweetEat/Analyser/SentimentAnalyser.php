@@ -4,74 +4,90 @@ namespace TweetEat\Analyser;
 
 class SentimentAnalyser
 {
-    protected $positiveKeywords;
-    protected $negativeKeywords;
+    /**
+     * @var array
+     */
+    private $lexicon;
 
-    const KEYWORD_MATCH_PREG = "/(#keywords#)/i";
 
     /**
-     * @param string $keywordsFile (json)
+     * Example lexicon:
+     *     array(
+     *        array('phrase' => 'not bad', 'rate' => 1),
+     *        array('phrase' => 'not good', 'rate' => -1),
+     *        array('phrase' => 'good', 'rate' => 1),
+     *        array('phrase' => 'bad', 'rate' => -1)
+     *     )
+     *
+     * @param array $lexicon
+     * @param bool $sort whether lexicon needs to be sorted by a word count
      */
-    public function __construct($keywordsFile)
+    public function __construct($lexicon, $sort = true)
     {
-        $keywords = file_get_contents($keywordsFile);
+        $this->lexicon = $lexicon;
 
-        $keywords = json_decode($keywords);
+        // lexicon needs to be sorted so that strings like "not bad" has
+        // higher priority compared to "bad"
+        if ($sort) {
+            usort($this->lexicon, function ($a, $b) {
+                $ac = substr_count($a['phrase'], ' ');
+                $bc = substr_count($b['phrase'], ' ');
 
-        $this->positiveKeywords = $keywords->positiveKeywords;
-        $this->negativeKeywords = $keywords->negativeKeywords;
+                if ($ac == $bc) {
+                    return 0;
+                }
+
+                return ($ac > $bc) ? -1 : 1;
+            });
+        }
     }
 
     /**
-     * Analyses sentiment of the given text
+     * Gives a rating for the text by counting occurances of positive and
+     * negative lexicon. Each positive occurance gives a +1 and each negative
+     * occurance gives a -1 to the rating.
      *
      * @param string $text
-     * @param string $lang
-     * @return int valuation of tweet in percents (can be negative)
+     * @return int rating
      */
-    public function analyse($text, $lang)
+    public function analyse($text)
     {
-        if (empty($this->positiveKeywords->$lang) || empty($this->negativeKeywords->$lang)) {
-            throw new \Exception("There are no keywords for the following language: $lang.");
+        $result = array(
+            'rating' => 0,
+            'phrases' => array(),
+        );
+
+        $tLen = strlen($text);
+
+        foreach ($this->lexicon as $phrase) {
+            $pLen = strlen($phrase['phrase']);
+
+            $start = 0;
+            do {
+                $start = stripos($text, $phrase['phrase'], $start);
+
+                if (false === $start || $start > 0 && ctype_alpha($text[$start-1]) || ($end = $start+$pLen) < $tLen && ctype_alpha($text[$end])) {
+                    continue;
+                }
+                
+                foreach ($result['phrases'] as $p) {
+                    if ($p['start'] <= $start && $p['end'] >= $start || $p['start'] <= $end && $p['end'] >= $end) {
+                        continue 2;
+                    }
+                }
+
+                $result['phrases'][] = array(
+                    'phrase' => $phrase['phrase'],
+                    'rate' => $phrase['rate'],
+                    'start' => $start,
+                    'end' => $end
+                );
+
+                $result['rating'] += $phrase['rate'];
+                
+            } while (false !== $start && ($start+=$pLen) < $tLen -1);
         }
 
-        $positivePreg = $this->convertToPreg($this->positiveKeywords->$lang);
-        $negativePreg = $this->convertToPreg($this->negativeKeywords->$lang);
-
-        // positive or negative tweet valuation, measured in percent
-        $valuation = 0;
-
-        $valuation += preg_match_all($positivePreg, $text, $matches) * 25;
-        $valuation -= preg_match_all($negativePreg, $text, $matches) * 25;
-
-        if ($valuation > 100) {
-            $valuation = 100;
-        } elseif ($valuation < -100) {
-            $valuation = -100;
-        }
-
-        return $valuation;
-    }
-
-    /**
-     * Converts array to preg string
-     * based on self::KEYWORDS_MATCH_PREG pattern
-     *
-     * @param array $arrayToConvert
-     * @return string
-     */
-    protected function convertToPreg($arrayToConvert)
-    {
-        $keywordString = "";
-
-        foreach ($arrayToConvert as $value) {
-            $keywordString .= $value . "|";
-        }
-
-        $keywordString = rtrim($keywordString, "|");
-
-        $preg = str_replace("#keywords#", $keywordString, self::KEYWORD_MATCH_PREG);
-
-        return $preg;
+        return $result;
     }
 }
