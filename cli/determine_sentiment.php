@@ -9,40 +9,25 @@ $container = new Container();
 
 $database = $container->getDatabase();
 
-$collection = $database->getTweetCollection();
+$tweetColl = $database->getTweetCollection();
+$lexiconColl = $database->getLexiconCollection();
 
-$lexicon = array();
+$lexicon = iterator_to_array($lexiconColl->findByLanguage('en'));
 
-$positiveWords = file_get_contents($container['sys.root_dir'].'/data/analyser/sentiment/positive-words.txt');
-$negativeWords = file_get_contents($container['sys.root_dir'].'/data/analyser/sentiment/negative-words.txt');
-
-foreach (explode("\n", $positiveWords) as $word) {
-    $lexicon[] = array(
-        'phrase' => $word,
-        'rate' => 1
-    );
-}
-
-foreach (explode("\n", $negativeWords) as $word) {
-    $lexicon[] = array(
-        'phrase' => $word,
-        'rate' => -1
-    );
-}
-
-$analyser = new SentimentAnalyser($lexicon, false);
+$analyser = new SentimentAnalyser($lexicon);
 
 do {
-    $tweets = $collection->findWithUndeterminedSentiment();
+    $tweets = $tweetColl->findWithUndeterminedSentiment();
 
     foreach ($tweets as $tweet) {
         foreach ($tweet['objects'] as $object) {
             $object['sentiment'] = $analyser->analyse($tweet['original']['text']);
 
-            if ($object['sentiment']['rating'] != 0)
+            if (count($object['sentiment']['ngrams'])) {
                 echo $object['sentiment']['rating'], ' ', $tweet['original']['text'], "\n\n";
+            }
 
-            $collection->updateSentiment($tweet['_id'], $object['_id'], $object['sentiment']);
+            $tweetColl->updateSentiment($tweet['_id'], $object['_id'], $object['sentiment']);
         }
     }
 

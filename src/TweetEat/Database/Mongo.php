@@ -46,4 +46,18 @@ class Mongo
 
         return $collection;
     }
+
+    /**
+     * @return Collection\LexiconCollection;
+     */
+    public function getLexiconCollection()
+    {
+        static $collection;
+
+        if (null === $collection) {
+            $collection = new Collection\LexiconCollection($this->db->lexicon);
+        }
+
+        return $collection;
+    }
 }

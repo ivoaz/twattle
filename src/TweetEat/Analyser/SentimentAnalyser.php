@@ -30,8 +30,8 @@ class SentimentAnalyser
         // higher priority compared to "bad"
         if ($sort) {
             usort($this->lexicon, function ($a, $b) {
-                $ac = substr_count($a['phrase'], ' ');
-                $bc = substr_count($b['phrase'], ' ');
+                $ac = substr_count($a['ngram'], ' ');
+                $bc = substr_count($b['ngram'], ' ');
 
                 if ($ac == $bc) {
                     return 0;
@@ -54,36 +54,36 @@ class SentimentAnalyser
     {
         $result = array(
             'rating' => 0,
-            'phrases' => array(),
+            'ngrams' => array(),
         );
 
         $tLen = strlen($text);
 
-        foreach ($this->lexicon as $phrase) {
-            $pLen = strlen($phrase['phrase']);
+        foreach ($this->lexicon as $ngram) {
+            $pLen = strlen($ngram['ngram']);
 
             $start = 0;
             do {
-                $start = stripos($text, $phrase['phrase'], $start);
+                $start = stripos($text, $ngram['ngram'], $start);
 
                 if (false === $start || $start > 0 && ctype_alpha($text[$start-1]) || ($end = $start+$pLen) < $tLen && ctype_alpha($text[$end])) {
                     continue;
                 }
                 
-                foreach ($result['phrases'] as $p) {
+                foreach ($result['ngrams'] as $p) {
                     if ($p['start'] <= $start && $p['end'] >= $start || $p['start'] <= $end && $p['end'] >= $end) {
                         continue 2;
                     }
                 }
 
-                $result['phrases'][] = array(
-                    'phrase' => $phrase['phrase'],
-                    'rate' => $phrase['rate'],
+                $result['ngrams'][] = array(
+                    'phrase' => $ngram['ngram'],
+                    'rate' => $ngram['rate'],
                     'start' => $start,
                     'end' => $end
                 );
 
-                $result['rating'] += $phrase['rate'];
+                $result['rating'] += $ngram['rate'];
                 
             } while (false !== $start && ($start+=$pLen) < $tLen -1);
         }
