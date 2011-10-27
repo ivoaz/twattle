@@ -63,4 +63,5 @@ Viewing statistics
 ------------------
 
 Run the statistics script
+
     php cli/stats.php
