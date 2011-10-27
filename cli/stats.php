@@ -13,7 +13,9 @@ $tweetColl = $database->getTweetCollection();
 
 $products = $productColl->findAll();
 
-foreach ($products as $product) {
+while ($products->hasNext()) {
+    $product = $products->getNext();
+    
     $totalTweets = $tweetColl->collection->count(array(
         'objects._id' => $product['_id'],
         'objects.type' => 'product',
@@ -49,12 +51,4 @@ foreach ($products as $product) {
     echo 'Negative tweets: ', $negativeTweets, chr(9), sprintf('%03.2f', round($negativeTweets/$totalTweets*100, 2)), "%\n";
     echo ' Neutral tweets: ', $neutralTweets, chr(9), sprintf("%03.2f", round($neutralTweets/$totalTweets*100, 2)), "%\n";
     echo "\n";
-}
-
-$tweets = $database->getTweetCollection()->collection->find(array(
-    'objects.sentiment.value' => array('$gt' => 0)
-), array('original.text' => true));
-
-foreach ($tweets as $tweet) {
-    echo $tweet['original']['text'] . "\n\n";
 }
