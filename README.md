@@ -55,6 +55,11 @@ Run the object determination script
 Determining sentiment
 ---------------------
 
+Make sure you have a lexicon in your database.
+You can import default lexicon by running import script
+
+    php cli/import_lexicon.php
+
 Run the sentiment determination script
 
     php cli/determine_sentiment.php
