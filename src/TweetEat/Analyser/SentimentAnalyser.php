@@ -13,10 +13,10 @@ class SentimentAnalyser
     /**
      * Example lexicon:
      *     array(
-     *        array('phrase' => 'not bad', 'rate' => 1),
-     *        array('phrase' => 'not good', 'rate' => -1),
-     *        array('phrase' => 'good', 'rate' => 1),
-     *        array('phrase' => 'bad', 'rate' => -1)
+     *        array('ngram' => 'not bad',  'rate' => 1),
+     *        array('ngram' => 'not good', 'rate' => -1),
+     *        array('ngram' => 'good',     'rate' => 1),
+     *        array('ngram' => 'bad',      'rate' => -1)
      *     )
      *
      * @param array $lexicon
@@ -43,9 +43,8 @@ class SentimentAnalyser
     }
 
     /**
-     * Gives a rating for the text by counting occurances of positive and
-     * negative lexicon. Each positive occurance gives a +1 and each negative
-     * occurance gives a -1 to the rating.
+     * Gives a sentiment rating for the text by finding occurances of lexicon
+     * n-grams and summing their rate.
      *
      * @param string $text
      * @return int rating
@@ -60,18 +59,18 @@ class SentimentAnalyser
         $tLen = strlen($text);
 
         foreach ($this->lexicon as $ngram) {
-            $pLen = strlen($ngram['ngram']);
+            $ngLen = strlen($ngram['ngram']);
 
             $start = 0;
             do {
                 $start = stripos($text, $ngram['ngram'], $start);
 
-                if (false === $start || $start > 0 && ctype_alpha($text[$start-1]) || ($end = $start+$pLen) < $tLen && ctype_alpha($text[$end])) {
+                if (false === $start || $start > 0 && ctype_alpha($text[$start-1]) || ($end = $start+$ngLen) < $tLen && ctype_alpha($text[$end])) {
                     continue;
                 }
                 
-                foreach ($result['ngrams'] as $p) {
-                    if ($p['start'] <= $start && $p['end'] >= $start || $p['start'] <= $end && $p['end'] >= $end) {
+                foreach ($result['ngrams'] as $ng) {
+                    if ($ng['start'] <= $start && $ng['end'] >= $start || $ng['start'] <= $end && $ng['end'] >= $end) {
                         continue 2;
                     }
                 }
@@ -85,7 +84,7 @@ class SentimentAnalyser
 
                 $result['rating'] += $ngram['rate'];
                 
-            } while (false !== $start && ($start+=$pLen) < $tLen -1);
+            } while (false !== $start && ($start+=$ngLen) < $tLen -1);
         }
 
         return $result;
