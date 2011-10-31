@@ -35,9 +35,18 @@ Copy the distributed config file and configure the database
 Collecting tweets
 -----------------
 
-Add some products to the database
+Add some objects to the database
 
-    db.products.insert({ "_id": "ipad", "name": "iPad", "keywords": ["ipad"] })
+    from = new Date()
+    till = new Date()
+    till.setDay(till.getDay()+7)
+    db.objects.insert({
+        "_id": "ipad",
+        "name": "iPad",
+        "keywords": ["ipad"],
+        "topical_from": from,
+        "topical_till": till
+    })
 
 Run the collector service
 
@@ -70,3 +79,4 @@ Viewing statistics
 Run the statistics script
 
     php cli/stats.php
+
