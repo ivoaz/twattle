@@ -34,14 +34,14 @@ class Mongo
     }
 
     /**
-     * @return Collection\ProductCollection;
+     * @return Collection\ObjectCollection;
      */
-    public function getProductCollection()
+    public function getObjectCollection()
     {
         static $collection;
 
         if (null === $collection) {
-            $collection = new Collection\ProductCollection($this->db->products);
+            $collection = new Collection\ObjectCollection($this->db->objects);
         }
 
         return $collection;

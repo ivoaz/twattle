@@ -8,7 +8,9 @@ $container = new Container();
 
 $database = $container->getDatabase();
 
-$products = iterator_to_array($database->getProductCollection()->findAll());
+$objects = iterator_to_array($database->getObjectCollection()->findAll(
+    array('keywords' => true)
+));
 
 do {
     $tweets = $database->getTweetCollection()->findWithUndeterminedObject();
@@ -20,9 +22,9 @@ do {
             continue;
         }
 
-        foreach ($products as $product) {
+        foreach ($objects as $id => $object) {
             $matched = false;
-            foreach ($product['keywords'] as $keyword) {
+            foreach ($object['keywords'] as $keyword) {
                 if (stripos($tweet['original']['text'], $keyword) !== false) {
                     $matched = true;
                     break;
@@ -30,14 +32,13 @@ do {
             }
 
             if ($matched) {
-                $object = array(
-                    '_id' => $product['_id'],
-                    'type' => 'product',
+                $match = array(
+                    '_id' => $id,
                 );
 
-                $tweet['objects'][] = $object;
+                $tweet['objects'][] = $match;
 
-                $database->getTweetCollection()->addObject($tweet['_id'], $object);
+                $database->getTweetCollection()->addObject($tweet['_id'], $match);
             }
         }
 

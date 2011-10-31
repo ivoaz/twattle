@@ -2,7 +2,7 @@
 
 namespace TweetEat\Collection;
 
-class ProductCollection
+class ObjectCollection
 {
     /**
      * @var \MongoCollection
@@ -18,11 +18,12 @@ class ProductCollection
     }
 
     /**
+     * @param array $fields
      * @return \MongoCursor
      */
-    public function findAll()
+    public function findAll($fields = array())
     {
-        return $this->collection->find();
+        return $this->collection->find(array(), $fields);
     }
 
     /**
@@ -30,7 +31,7 @@ class ProductCollection
      */
     public function findKeywords()
     {
-        $result = $this->collection->db->command(array('distinct' => 'products', 'key' => 'keywords'));
+        $result = $this->collection->db->command(array('distinct' => 'objects', 'key' => 'keywords'));
         return $result['values'];
     }
 
@@ -43,20 +44,21 @@ class ProductCollection
     {
         $date = new \MongoDate();
         $result = $this->collection->db->command(array(
-            'distinct' => 'products',
+            'distinct' => 'objects',
             'key' => 'keywords',
             'query' => array(
                 'topical_from' => array('$lte' => $date),
                 'topical_till' => array('$gte' => $date),
-            )));
+            )
+        ));
         return $result['values'];
     }
     
     /**
-     * @param array|object $product
+     * @param array|object $object
      */
-    public function insert($product)
+    public function insert($object)
     {
-        $this->collection->insert($product);
+        $this->collection->insert($object);
     }
 }
