@@ -15,7 +15,11 @@ $database = $container->getDatabase();
 
 $collector = new MongoCollector($database->getTweetCollection());
 
-$keywords = $database->getProductCollection()->findKeywords();
+$keywords = $database->getProductCollection()->findTopicalKeywords();
+
+if (empty($keywords)) {
+    exit("The are no topical products at the time.\n");
+}
 
 $streamline = new FilterStreamline($username, $password, $collector);
 $streamline->setTrack($keywords);
