@@ -29,7 +29,6 @@ while ($objects->hasNext()) {
 
     $negativeTweets = $tweetColl->collection->count(array(
         'objects._id' => $object['_id'],
-        'objects.type' => 'product',
         'objects.sentiment.rating' => array(
             '$lt' => 0,
         ),
@@ -37,7 +36,6 @@ while ($objects->hasNext()) {
 
     $neutralTweets = $tweetColl->collection->count(array(
         'objects._id' => $object['_id'],
-        'objects.type' => 'product',
         'objects.sentiment.rating' => 0,
     ));
 
