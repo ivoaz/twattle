@@ -70,7 +70,7 @@ class TweetCollection
     }
 
     /**
-     * @param float $id
+     * @param string $id
      */
     public function remove($id)
     {
