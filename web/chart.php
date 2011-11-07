@@ -2,8 +2,8 @@
 <head>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<link rel="stylesheet" type="text/css" href="style.css" />
-<script src='dropdown.js'></script>
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+<script src='js/dropdown.js'></script>
 
 <script>
 /* Mainigie */
@@ -28,7 +28,7 @@ var Main = {
 
 function getMood(id){
 $('#chart_box').fadeOut(300);
-	$.get("../api/stats.php", { object : id}, function(data){
+	$.get("api/stats.php", { object : id}, function(data){
 									var mood = data;
 									console.log(mood);
 									Main.positive = mood['positive'];
