@@ -29,12 +29,16 @@ class MongoCollector
             'collected_at' => new \MongoDate(),
         );
 
-        if (!isset($tweet['original']['id'])) {
+        if (isset($tweet['original']['id_str'])) {
+            $tweet['_id'] = $tweet['original']['id_str'];
+        }
+        elseif (isset($tweet['original']['id'])) {
+            $tweet['_id'] = (string)$tweet['original']['id'];
+        }
+        else {
             // can't collect tweet without id
             return;
         }
-        
-        $tweet['_id'] = $tweet['original']['id'];
         
         $this->collection->insert($tweet);
     }
