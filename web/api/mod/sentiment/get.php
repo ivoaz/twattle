@@ -21,6 +21,7 @@ $criteria = array(
 $cursor = $tweetColl->collection->find($criteria, array(
     '_id' => true,
     'original.text' => true,
+    'moderation.sentiment' => true,
 ));
 
 // prepare for json
