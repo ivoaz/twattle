@@ -32,6 +32,16 @@ class ObjectCollection
     public function findKeywords()
     {
         $result = $this->collection->db->command(array('distinct' => 'objects', 'key' => 'keywords'));
+
+        // for old mongodb versions
+        if (count($result['values']) != count($result['values'], 1)) {
+            $keywords = array();
+            foreach ($result as $item) {
+                $keywords = array_merge($keywords, $item);
+            }
+            return array_unique($keywords);
+        }
+
         return $result['values'];
     }
 
@@ -51,6 +61,15 @@ class ObjectCollection
                 'topical_till' => array('$gte' => $date),
             )
         ));
+
+        // for old mongodb versions
+        if (count($result['values']) != count($result['values'], 1)) {
+            $keywords = array();
+            foreach ($result as $item) {
+                $keywords = array_merge($keywords, $item);
+            }
+            return array_unique($keywords);
+        }
         
         return $result['values'];
     }
