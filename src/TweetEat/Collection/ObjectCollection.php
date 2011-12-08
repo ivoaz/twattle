@@ -51,9 +51,27 @@ class ObjectCollection
                 'topical_till' => array('$gte' => $date),
             )
         ));
+        
         return $result['values'];
     }
-    
+
+    /**
+     * Finds objects that are topical at the time
+     *
+     * @param string $category
+     * @param int $limit
+     *
+     * @return \MongoCursor
+     */
+    public function findTopical($category = null, $limit = 2)
+    {
+        $date = new \MongoDate();
+        return $this->collection->find(array(
+            'topical_from' => array('$lte' => $date),
+            'topical_till' => array('$gte' => $date),
+        ))->limit($limit);
+    }
+
     /**
      * @param array|object $object
      */

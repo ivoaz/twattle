@@ -62,6 +62,52 @@ class TweetCollection
     }
 
     /**
+     * Finds latest tweets containing given object
+     *
+     * @param string $id
+     * @return \MongoCursor
+     */
+    public function findLatestContainingObject($id, $limit = 0)
+    {
+        return $this->collection->find(array(
+            'objects._id' => $id,
+        ))->limit($limit);
+    }
+
+    /**
+     * Generates object statistics
+     *
+     * @param string $id
+     * @return array
+     */
+    public function getObjectStats($id)
+    {
+        $stats = array();
+
+        $stats['total'] = $this->collection->count(array(
+            'objects._id' => $id,
+        ));
+
+        $stats['pos'] = $this->collection->count(array(
+            'objects._id' => $id,
+            'objects.sentiment.rating' => array(
+                '$gt' => 0,
+            ),
+        ));
+
+        $stats['neg'] = $this->collection->count(array(
+            'objects._id' => $id,
+            'objects.sentiment.rating' => array(
+                '$lt' => 0,
+            ),
+        ));
+
+        $stats['spam'] = 'N/A';
+
+        return $stats;
+    }
+
+    /**
      * @param array|object $tweet
      */
     public function insert($tweet)
