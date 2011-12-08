@@ -65,7 +65,7 @@ class ObjectCollection
         // for old mongodb versions
         if (count($result['values']) != count($result['values'], 1)) {
             $keywords = array();
-            foreach ($result['result'] as $item) {
+            foreach ($result['values'] as $item) {
                 $keywords = array_merge($keywords, $item);
             }
             return array_unique($keywords);
