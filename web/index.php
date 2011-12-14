@@ -15,7 +15,7 @@ $objects = iterator_to_array($objectColl->findTopical());
 
 $tweets = array();
 foreach ($objects as $key => $object) {
-    $tweets[$key] = $tweetColl->findLatestContainingObject($object['_id'], 10);
+    $tweets[$key] = $tweetColl->findLatestWithSentimentContainingObject($object['_id'], 10);
     $stats[$key] = $tweetColl->getObjectStats($object['_id']);
 }
 
@@ -23,57 +23,82 @@ foreach ($objects as $key => $object) {
 <!doctype html>
 <html>
     <head>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
-        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-        <link rel="stylesheet" type="text/css" href="css/style2.css" />
+        <title>TweetEat - The battle of the brands</title>
+
+        <link rel="stylesheet" type="text/css" media="all" href="css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" media="all" href="css/style.css" />
     </head>
 
     <body>
-        <div id="like">
-            <span class="twitter">
-                <a href="https://twitter.com/share" class="twitter-share-button" data-count="horizontal">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
-            </span>
+        <div class="topbar">
+            <div class="topbar-inner">
+                <div class="container">
+                    <a class="brand" href="/">TweetEat</a>
 
-            <span class="facebook">
-                <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Ftweeteat.tk&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=true&amp;action=like&amp;colorscheme=light&amp;font&amp;height=80&amp;appId=177853892250056" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:80px;" allowTransparency="true"></iframe>
-            </span>
-        </div>
-
-        <div id="container">
-            <div id="caption">TweetEat Battle</div>
-            <?php $first = true; foreach ($objects as $key => $object):  ?>
-                <div class="prodContainer" id="<?php echo $first ? 'firstProd': 'secondProd' ?>">
-                    <h1><?php echo $object['name']?></h1>
-
-                    <img class="prodImg" src="http://<?php echo urlencode($object['name']) ?>.jpg.to" />
-
-                    <div class="result">
-                        <h2><?php echo round($stats[$key]['pos']/$stats[$key]['total']*100, 2)?>%</h2>
-                        <span>POSITIVE</span>
-                    </div>
-
-                    <div class="more">
-                        <h2>more</h2>
-                        <div class="stats">
-                            <div class="total">Total: <?php echo $stats[$key]['total'] ?></div>
-                            <div class="positive">Positive: <?php echo $stats[$key]['pos'] ?></div>
-                            <div class="negative">Negative: <?php echo $stats[$key]['neg'] ?> </div>
-                            <div class="neutral">Neutral: <?php echo $stats[$key]['total'] - $stats[$key]['pos'] - $stats[$key]['neg']; ?> </div>
-                            <div class="stats">Tweeted by "human": <?php echo $stats[$key]['total'] - $stats[$key]['spam'] ?> </div>
-                            <div class="stats">Tweeted by "machines": <?php echo $stats[$key]['spam'] ?> </div>
-                            <!-- <div class="stats">HOT day: 14.09.2011 </div> -->
-                        </div>
-                    </div>
-
-                    <ul class="tweetList">
-                        <?php foreach($tweets[$key] as $tweet): $rating = $tweet['objects'][0]['sentiment']['rating']; ?>
-                            <li class="tweet<?php if ($rating > 0) echo ' good'; elseif ($rating < 0) echo ' bad'; ?>">
-                                <?php echo $tweet['original']['text'] ?>
-                            </li>
-                        <?php endforeach ?>
+                    <ul class="nav">
+                        <li class="active"><a href="/">Battle</a></li>
                     </ul>
                 </div>
-            <?php $first = false; endforeach ?>
+            </div>
+        </div>
+
+        <div class="container battle">
+            <h1>The battle of the brands<br /><small>Which will you tweet about?</small></h1>
+
+            <div class="battle-images">
+                <?php foreach ($objects as $object): ?>
+                    <span class="battle-image">
+                        <img class="thumbnail" width="330" src="http://<?php echo htmlentities($object['name']) ?>-logo.jpg.to" alt="<?php echo $object['name'] ?>" />
+                    </span>
+                <?php endforeach ?>
+            </div>
+
+            <div class="battle-stats">
+                <?php foreach ($objects as $key => $object): ?>
+                    <ul class="battle-sentiment unstyled">
+                        <li class="positive"><?php echo round($stats[$key]['pos']/($stats[$key]['pos']+$stats[$key]['neg'])*100) ?>% positive tweets</li>
+                        <li class="negative"><?php echo round($stats[$key]['neg']/($stats[$key]['pos']+$stats[$key]['neg'])*100) ?>% negative tweets</li>
+                        <li class="neutral"><?php echo round(($stats[$key]['total']-$stats[$key]['pos']-$stats[$key]['neg'])/$stats[$key]['total']*100) ?>% neutral tweets</li>
+                    </ul>
+                <?php endforeach ?>
+            </div>
+
+            <div class="battle-tweets">
+                <?php foreach ($objects as $key => $object): ?>
+                    <table class="condensed-table">
+                        <thead>
+                            <tr>
+                                <th><h3>Latest <?php echo htmlentities($object['name']) ?> tweets</h3></th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            <?php foreach ($tweets[$key] as $tweet): $rating = $tweet['objects'][0]['sentiment']['rating']; ?>
+                                <tr style="background-color: <?php echo $rating > 0 ? '#eeffee' : ($rating < 0 ? '#ffeeee' : '#f8f8f8') ?>;">
+                                    <td><?php echo $tweet['original']['text'] ?></td>
+                                </tr>
+                             <?php endforeach ?>
+                        </tbody>
+                    </table>
+                <?php endforeach ?>
+            </div>
+        </div>
+
+        <div class="container">
+            <footer>
+                <p>
+                    <span class="twitter">
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://tweeteat.tk/" data-lang="en" data-size="large">Tweet</a>
+                        <script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+                    </span>
+
+                    <span class="facebook">
+                        <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Ftweeteat.tk&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=35&amp;appId=269258999789915" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:26px;" allowTransparency="true"></iframe>
+                    </span>
+                </p>
+                
+                <p>&copy; TweetEat 2011</p>
+            </footer>
         </div>
     </body>
 </html>

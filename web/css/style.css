@@ -1,108 +1,41 @@
-body{
-background:#a9e5eb;
+body {
+    padding-top: 60px;
 }
 
-#tweetlist{
-margin:0 auto;
-margin-top:50px;
-   
-    width: 650px;
+.battle {
+    text-align: center;
 }
 
-
-#counter, .more{
-background:rgba(255,255,255,0.3);
-padding-left:50px;
-padding-right:50px;
-margin:0 auto;
-text-decoration:none;
-color:#000;
-border:1px solid #000;
-position:fixed;
-
-left:10px;
+.battle-image {
+    width: 468px;
+    display: inline-block;
+    vertical-align: middle;
 }
 
-.more{
-bottom:10px;
+.battle-stats {
+    margin-top: 10px;
 }
 
-#counter{
-top:0px;
+.battle-sentiment {
+    width: 468px;
+    display: inline-block;
 }
 
-.litweet{
- background: #fff;
- border:1px solid #000;
-border-radius: 30px;
-box-shadow: -2px 2px 6px #888;
-margin:10px;
-margin-top:20px;
-padding:10px;
+.battle-sentiment .positive {
+    color: green;
 }
 
-.dropdown {
-	font-family: "Trebuchet MS";
-	font-size: 13px;
-	font-weight: bold;
-	padding: 3px 0 3px 5px;
-	margin:0 auto;
-	border: solid 2px #3399cc;
-	border-radius: 8px;
-	background: url('../img/downArrow.png') no-repeat right center #fff;
-	cursor: pointer;
-	position: relative;
-}
-.dropdown.hover {  }
-
-.dropdown .selectedOption { color: #555; }
-.dropdown .selectedOption span { display: none; }
-
-.dropdown .ulsWrapper {
-	border: solid 2px #26a1ce;
-	padding: 6px 0 5px 0;
-	background: #fff;
-	z-index: 1000;
-	position: absolute;
-	width: 100%;
-	margin-left: -2px;
-	border-radius: 8px;
-	top: 22px;
-}
-.dropdown ul { float: left; margin: -2px 0 0 0; border: none; clear: none; height: auto; padding: 0; }
-
-.dropdown li { padding: 0; border: none; background: transparent; }
-.dropdown li:hover { background: #ddd; }
-.dropdown img { float: left; width: 30px; margin: 3px 7px; }
-.dropdown ul div { clear: both; width: 100%; height: 1px; }
-.dropdown a { padding: 2px 0 2px 6px; text-decoration: none; font-size: 13px; display: block; font-size: 13px; color: #555; }
-.dropdown li:hover a { text-decoration: underline; }
-.dropdown a.disabled { color: #999; }
-
-#container{
-margin:0 auto;
-margin-top:100px;
-width:454px;
-padding:56px 48px 48px;
-background: #35b6ee;
-border-radius: 30px;
-box-shadow: -2px 2px 6px #888;
+.battle-sentiment .negative {
+    color: red;
 }
 
-#chart_box{
-display:none;
-margin:0 auto;
-margin-top:40px;
-width: 502px;
-padding: 20px;
-background: #35b6ee;
-border-radius: 30px;
-box-shadow: -2px 2px 6px #888;
+.battle-tweets table {
+    width: 400px;
+    margin: 0 34px;
+    display: inline-block;
+    vertical-align: top;
 }
-#chart_div{
-position: relative;
-margin:auto 0;
-border-radius: 30px;
-border: solid 2px #3399cc;
-background:#FFFFFF;
+
+footer .twitter {
+    margin-right: 50px;
 }

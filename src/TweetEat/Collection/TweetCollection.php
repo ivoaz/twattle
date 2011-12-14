@@ -71,6 +71,26 @@ class TweetCollection
     {
         return $this->collection->find(array(
             'objects._id' => $id,
+        ))->sort(array(
+            'objects.sentiment.determined_at' => -1,
+        ))->limit($limit);
+    }
+
+    /**
+     * Finds latest tweets containing given object and determined sentiment
+     *
+     * @param string $id
+     * @return \MongoCursor
+     */
+    public function findLatestWithSentimentContainingObject($id, $limit = 0)
+    {
+        return $this->collection->find(array(
+            'objects._id' => $id,
+            'objects.sentiment.rating' => array(
+                '$ne' => 0,
+            ),
+        ))->sort(array(
+            'objects.0.sentiment.determined_at' => -1,
         ))->limit($limit);
     }
 
