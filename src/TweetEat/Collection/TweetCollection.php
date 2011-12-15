@@ -85,7 +85,7 @@ class TweetCollection
                 '$ne' => 0,
             ),
         ))->sort(array(
-            'objects.0.sentiment.determined_at' => -1,
+            '_id' => -1,
         ))->limit($limit);
     }
 

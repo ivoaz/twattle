@@ -13,7 +13,7 @@ $objects = iterator_to_array($database->getObjectCollection()->findAll(
 ));
 
 do {
-    $tweets = $database->getTweetCollection()->findWithUndeterminedObject()->limit(20);
+    $tweets = $database->getTweetCollection()->findWithUndeterminedObject()->limit(100);
 
     foreach ($tweets as $tweet) {
         if (!isset($tweet['original']['text'])) {

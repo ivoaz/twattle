@@ -17,7 +17,7 @@ $lexicon = iterator_to_array($lexiconColl->findByLanguage('en'));
 $analyser = new SentimentAnalyser($lexicon);
 
 do {
-    $tweets = $tweetColl->findWithUndeterminedSentiment()->limit(20);
+    $tweets = $tweetColl->findWithUndeterminedSentiment()->limit(100);
 
     foreach ($tweets as $tweet) {
         foreach ($tweet['objects'] as $object) {
