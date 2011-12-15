@@ -33,13 +33,8 @@ class TweetCollection
     public function findWithUndeterminedObject()
     {
         return $this->collection->find(array(
-            '$or' => array(
-                array('objects' => array(
-                    '$exists' => false,
-                )),
-                array('objects' => array(
-                    '$size' => 0,
-                )),
+            'objects' => array(
+                '$exists' => false,
             ),
         ));
     }
