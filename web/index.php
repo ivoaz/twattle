@@ -59,6 +59,7 @@ foreach ($objects as $key => $object) {
                         <li class="positive"><?php echo round($stats[$key]['pos']/($stats[$key]['pos']+$stats[$key]['neg'])*100) ?>% positive tweets</li>
                         <li class="negative"><?php echo round($stats[$key]['neg']/($stats[$key]['pos']+$stats[$key]['neg'])*100) ?>% negative tweets</li>
                         <li class="neutral"><?php echo round(($stats[$key]['total']-$stats[$key]['pos']-$stats[$key]['neg'])/$stats[$key]['total']*100) ?>% neutral tweets</li>
+                        <li class="total"><?php echo $stats[$key]['total'] ?> total tweets</li>
                     </ul>
                 <?php endforeach ?>
             </div>
