@@ -22,18 +22,22 @@ class MongoCollector
     /**
      * @param string $data
      */
-    public function process($data)
+    public function collect($data)
     {
+        $encoded = json_decode($data, true);
         $tweet = array(
-            'original' => json_decode($data, true),
+            'original_text' => $encoded['text'],
             'collected_at' => new \MongoDate(),
+            'created_at' => @$encoded['created_at'],
+            'retweeted' => @$encoded['retweeted'],
+            'user_id' => @$encoded['user']['id_str'],
         );
-
-        if (isset($tweet['original']['id_str'])) {
-            $tweet['_id'] = $tweet['original']['id_str'];
+        
+        if (isset($encoded['id_str'])) {
+            $tweet['_id'] = $encoded['id_str'];
         }
-        elseif (isset($tweet['original']['id'])) {
-            $tweet['_id'] = (string)$tweet['original']['id'];
+        elseif (isset($encoded['id'])) {
+            $tweet['_id'] = (string)$encoded['id'];
         }
         else {
             // can't collect tweet without id
@@ -41,5 +45,13 @@ class MongoCollector
         }
         
         $this->collection->insert($tweet);
+    }
+
+    /**
+     * @param string $data
+     */
+    public function process($data)
+    {
+        $this->collect($data);
     }
 }

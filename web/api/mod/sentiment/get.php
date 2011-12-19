@@ -20,7 +20,7 @@ $criteria = array(
 // get cursor
 $cursor = $tweetColl->collection->find($criteria, array(
     '_id' => true,
-    'original.text' => true,
+    'original_text' => true,
     'moderation.sentiment' => true,
 ));
 

@@ -37,7 +37,7 @@ class ObjectCollection
     }
 
     /**
-     * Finds keywords of products that are topical at the time
+     * Finds keywords of objects that are topical right now
      *
      * @return \MongoCursor
      */
@@ -57,14 +57,13 @@ class ObjectCollection
     }
 
     /**
-     * Finds objects that are topical at the time
+     * Finds objects that are topical right now
      *
-     * @param string $category
      * @param int $limit
      *
      * @return \MongoCursor
      */
-    public function findTopical($category = null, $limit = 2)
+    public function findTopical($limit = 2)
     {
         $date = new \MongoDate();
         return $this->collection->find(array(

@@ -10,3 +10,6 @@
     username = ""
     password = ""
     database = "tweeteat"
+
+[processor]
+    max_tweets = 1000

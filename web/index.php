@@ -13,10 +13,8 @@ $objectColl = $database->getObjectCollection();
 
 $objects = iterator_to_array($objectColl->findTopical());
 
-$tweets = array();
 foreach ($objects as $key => $object) {
-    $tweets[$key] = $tweetColl->findLatestWithSentimentContainingObject($object['_id'], 10);
-    $stats[$key] = $tweetColl->getObjectStats($object['_id']);
+    $objects[$key]['tweets'] = $tweetColl->findForBattlePage($object['_id'], 10);
 }
 
 ?>
@@ -54,18 +52,18 @@ foreach ($objects as $key => $object) {
             </div>
 
             <div class="battle-stats">
-                <?php foreach ($objects as $key => $object): ?>
+                <?php foreach ($objects as $object): ?>
                     <ul class="battle-sentiment unstyled">
-                        <li class="positive"><?php echo round($stats[$key]['pos']/($stats[$key]['pos']+$stats[$key]['neg'])*100) ?>% positive tweets</li>
-                        <li class="negative"><?php echo round($stats[$key]['neg']/($stats[$key]['pos']+$stats[$key]['neg'])*100) ?>% negative tweets</li>
-                        <li class="neutral"><?php echo round(($stats[$key]['total']-$stats[$key]['pos']-$stats[$key]['neg'])/$stats[$key]['total']*100) ?>% neutral tweets</li>
-                        <li class="total"><?php echo $stats[$key]['total'] ?> total tweets</li>
+                        <li class="positive"><?php echo round($object['positive_tweets']/($object['positive_tweets']+$object['negative_tweets'])*100) ?>% positive tweets</li>
+                        <li class="negative"><?php echo round($object['negative_tweets']/($object['positive_tweets']+$object['negative_tweets'])*100) ?>% negative tweets</li>
+                        <li class="neutral"><?php echo round(($object['total_tweets']-$object['positive_tweets']-$object['negative_tweets'])/$object['total_tweets']*100) ?>% neutral tweets</li>
+                        <li class="total"><?php echo $object['total_tweets'] ?> total tweets</li>
                     </ul>
                 <?php endforeach ?>
             </div>
 
             <div class="battle-tweets">
-                <?php foreach ($objects as $key => $object): ?>
+                <?php foreach ($objects as $object): ?>
                     <table class="condensed-table">
                         <thead>
                             <tr>
@@ -74,9 +72,9 @@ foreach ($objects as $key => $object) {
                         </thead>
                         
                         <tbody>
-                            <?php foreach ($tweets[$key] as $tweet): $rating = $tweet['objects'][0]['sentiment']['rating']; ?>
+                            <?php foreach ($object['tweets'] as $tweet): $rating = $tweet['sentiment']['rating']; ?>
                                 <tr style="background-color: <?php echo $rating > 0 ? '#eeffee' : ($rating < 0 ? '#ffeeee' : '#f8f8f8') ?>;">
-                                    <td><?php echo $tweet['original']['text'] ?></td>
+                                    <td><?php echo $tweet['original_text'] ?></td>
                                 </tr>
                              <?php endforeach ?>
                         </tbody>

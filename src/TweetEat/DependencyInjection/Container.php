@@ -46,6 +46,7 @@ class Container extends \Pimple
             }
             
             $conn = new \Mongo($c['mongodb.server'], $options);
+            
             return $conn->$database;
         });
 
@@ -53,13 +54,59 @@ class Container extends \Pimple
         $this['database'] = $this->share(function ($c) {
             return new \TweetEat\Database\Mongo($c['mongodb']);
         });
+        
+        // register normalizer
+        $this['normalizer'] = $this->share(function ($c) {
+            return new \TweetEat\Normalizer\Normalizer();
+        });
+        
+        // register object determinator
+        $this['object_determinator'] = $this->share(function ($c) {
+            return new \TweetEat\Determinator\ObjectDeterminator($c->getDatabase()->getObjectCollection());
+        });
+        
+        // register sentiment analyser
+        $this['sentiment_analyser'] = $this->share(function ($c) {
+            return new \TweetEat\Analyser\KeywordSentimentAnalyser($c->getDatabase()->getLexiconCollection());
+        });
+
+        // register processor
+        $this['processor'] = $this->share(function ($c) {
+            return new \TweetEat\Processor\Processor($c['normalizer'], $c['object_determinator'], $c['sentiment_analyser']);
+        });
+
+        // register collector
+        $this['collector'] = $this->share(function ($c) {
+            return new \TweetEat\Collector\MongoCollector($c->getDatabase()->getTweetCollection());
+        });
+
+        // register streamline
+        $this['streamline'] = $this->share(function ($c) {
+            return new \TweetEat\Streamline\FilterStreamline($c['twitter.api_username'], $c['twitter.api_password'], $c['collector']);
+        });
     }
 
     /**
-     * @return \TweetEat\Database\Mongo
+     * @return TweetEat\Database\Mongo
      */
     public function getDatabase()
     {
         return $this->offsetGet('database');
+    }
+
+    /**
+     * @return TweetEat\Processor\Processor
+     */
+    public function getProcessor()
+    {
+        return $this->offsetGet('processor');
+    }
+
+    /**
+     * @return TweetEat\Streamline\FilterStreamline
+     */
+    public function getStreamline()
+    {
+        return $this->offsetGet('streamline');
     }
 }

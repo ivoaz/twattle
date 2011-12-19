@@ -26,35 +26,25 @@ class TweetCollection
     }
 
     /**
-     * Finds all tweets with undetermined object
-     *
      * @return \MongoCursor
      */
-    public function findWithUndeterminedObject()
+    public function findForProcessing()
     {
         return $this->collection->find(array(
-            'objects' => array(
-                '$exists' => false,
-            ),
+            '$or' => array(
+                array(
+                    'normalized_text' => array('$exists' => false)
+                ),
+                array(
+                    'objects' => array('$exists' => false)
+                ),
+                array(
+                    'sentiment' => array('$exists' => false)
+                )
+            )
         ));
     }
 
-    /**
-     * Finds all tweets with undetermined sentiment
-     *
-     * @return \MongoCursor
-     */
-    public function findWithUndeterminedSentiment()
-    {
-        return $this->collection->find(array(
-            'objects' => array(
-                '$exists' => true,
-            ),
-            'objects.sentiment' => array(
-                '$exists' => false,
-            ),
-        ));
-    }
 
     /**
      * Finds latest tweets containing given object
@@ -65,7 +55,7 @@ class TweetCollection
     public function findLatestContainingObject($id, $limit = 0)
     {
         return $this->collection->find(array(
-            'objects._id' => $id,
+            'objects' => $id,
         ))->sort(array(
             'objects.sentiment.determined_at' => -1,
         ))->limit($limit);
@@ -74,52 +64,19 @@ class TweetCollection
     /**
      * Finds latest tweets containing given object and determined sentiment
      *
-     * @param string $id
+     * @param string $objectId
      * @return \MongoCursor
      */
-    public function findLatestWithSentimentContainingObject($id, $limit = 0)
+    public function findForBattlePage($objectId, $limit = 0)
     {
         return $this->collection->find(array(
-            'objects._id' => $id,
-            'objects.sentiment.rating' => array(
+            'objects' => $objectId,
+            'sentiment.rating' => array(
                 '$ne' => 0,
             ),
         ))->sort(array(
             '_id' => -1,
         ))->limit($limit);
-    }
-
-    /**
-     * Generates object statistics
-     *
-     * @param string $id
-     * @return array
-     */
-    public function getObjectStats($id)
-    {
-        $stats = array();
-
-        $stats['total'] = $this->collection->count(array(
-            'objects._id' => $id,
-        ));
-
-        $stats['pos'] = $this->collection->count(array(
-            'objects._id' => $id,
-            'objects.sentiment.rating' => array(
-                '$gt' => 0,
-            ),
-        ));
-
-        $stats['neg'] = $this->collection->count(array(
-            'objects._id' => $id,
-            'objects.sentiment.rating' => array(
-                '$lt' => 0,
-            ),
-        ));
-
-        $stats['spam'] = 'N/A';
-
-        return $stats;
     }
 
     /**
@@ -131,50 +88,22 @@ class TweetCollection
     }
 
     /**
-     * @param string $id
+     * @param array|object $tweet
      */
-    public function remove($id)
+    public function update($tweet)
+    {
+        $this->collection->update(array(
+            '_id' => $tweet['_id']
+        ), $tweet);
+    }
+
+    /**
+     * @param mixed $tweet
+     */
+    public function remove($tweet)
     {
         $this->collection->remove(array(
-            '_id' => $id,
-        ));
-    }
-
-    /**
-     * Update tweets sentiment for object
-     *
-     * @param float $tweetId
-     * @param mixed $objectId
-     * @param array $sentiment
-     */
-    public function updateSentiment($tweetId, $objectId, $sentiment)
-    {
-        $sentiment['determined_at'] = new \MongoDate();
-        
-        $this->collection->update(array(
-            '_id' => $tweetId,
-            'objects._id' => $objectId
-        ), array(
-            '$set' => array(
-                'objects.$.sentiment' => $sentiment
-            )
-        ));
-    }
-
-    /**
-     * Add object to the set of tweet object
-     *
-     * @param type $tweetId
-     * @param type $object
-     */
-    public function addObject($tweetId, $object)
-    {
-        $this->collection->update(array(
-            '_id' => $tweetId,
-        ), array(
-            '$addToSet' => array(
-                'objects' => $object,
-            ),
+            '_id' => is_array($tweet) ? $tweet['_id'] : $tweet,
         ));
     }
 }

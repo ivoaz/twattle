@@ -2,7 +2,7 @@
 
 namespace TweetEat\Analyser;
 
-class SentimentAnalyser
+class KeywordSentimentAnalyser
 {
     /**
      * @var array
@@ -19,12 +19,12 @@ class SentimentAnalyser
      *        array('ngram' => 'bad',      'rate' => -1)
      *     )
      *
-     * @param array $lexicon
+     * @param LexiconCollection $collection
      * @param bool $sort whether lexicon needs to be sorted by a word count
      */
-    public function __construct($lexicon, $sort = true)
+    public function __construct($collection, $sort = true)
     {
-        $this->lexicon = $lexicon;
+        $this->lexicon = iterator_to_array($collection->findByLanguage('en'));
 
         // lexicon needs to be sorted so that strings like "not bad" has
         // higher priority compared to "bad"
