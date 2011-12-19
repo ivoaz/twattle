@@ -1,5 +1,13 @@
 <?php
 
+if (($lockFile = fopen(__DIR__.'/collect.lock', 'w')) === false) {
+    exit("Failed to open lock file.\n");
+}
+
+if (flock($lockFile, LOCK_EX|LOCK_NB, $wouldBlock) === false || $wouldBlock) {
+	exit("Failed to lock.\n");
+}
+
 require_once(__DIR__.'/../app/bootstrap.php');
 
 use TweetEat\DependencyInjection\Container;
@@ -17,3 +25,6 @@ if (empty($keywords)) {
 $streamline = $container->getStreamline();
 $streamline->setTrack($keywords);
 $streamline->consume();
+
+flock($lockFile, LOCK_UN);
+fclose($lockFile);

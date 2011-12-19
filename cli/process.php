@@ -1,5 +1,13 @@
 <?php
 
+if (($lockFile = fopen(__DIR__.'/process.lock', 'w')) === false) {
+    exit("Failed to open lock file.\n");
+}
+
+if (flock($lockFile, LOCK_EX|LOCK_NB, $wouldBlock) === false || $wouldBlock) {
+	exit("Failed to lock.\n");
+}
+
 require_once(__DIR__.'/../app/bootstrap.php');
 
 use TweetEat\DependencyInjection\Container;
@@ -44,3 +52,6 @@ foreach ($tweets as $tweet) {
         $tweetCollection->remove($tweet);
     }
 }
+
+flock($lockFile, LOCK_UN);
+fclose($lockFile);
