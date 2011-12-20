@@ -43,6 +43,8 @@ foreach ($tweets as $tweet) {
                 '$inc' => array(
                     'total_tweets' => 1,
                     $sentiment.'_tweets' => 1,
+                    'naive_bayesian.positive' => $tweet['sentiment']['naive_bayesian']['positive'],
+                    'naive_bayesian.negative' => $tweet['sentiment']['naive_bayesian']['negative'],
                 ),
             ));
         }

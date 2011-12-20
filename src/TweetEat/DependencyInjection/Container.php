@@ -72,7 +72,7 @@ class Container extends \Pimple
 
         // register processor
         $this['processor'] = $this->share(function ($c) {
-            return new \TweetEat\Processor\Processor($c['normalizer'], $c['object_determinator'], $c['sentiment_analyser']);
+            return new \TweetEat\Processor\Processor($c['normalizer'], $c['object_determinator'], $c['sentiment_analyser'], $c['naive_bayesian']);
         });
 
         // register collector
@@ -83,6 +83,16 @@ class Container extends \Pimple
         // register streamline
         $this['streamline'] = $this->share(function ($c) {
             return new \TweetEat\Streamline\FilterStreamline($c['twitter.api_username'], $c['twitter.api_password'], $c['collector']);
+        });
+
+        // register naive bayesian
+        $this['naive_bayesian'] = $this->share(function ($c) {
+            return new \DotClear\Weblog\NaiveBayesian($c['naive_bayesian.storage']);
+        });
+
+        // register naive bayesian storage
+        $this['naive_bayesian.storage'] = $this->share(function ($c) {
+            return new \DotClear\Weblog\NaiveBayesianStorage($c['mysql.username'], $c['mysql.password'], $c['mysql.server'], $c['mysql.database']);
         });
     }
 

@@ -56,9 +56,8 @@ foreach ($objects as $key => $object) {
                 <?php foreach ($objects as $object): ?>
                     <ul class="battle-sentiment unstyled">
                         <li class="total"><?php echo $object['total_tweets'] ?></li>
-                        <li class="positive"><?php echo round($object['positive_tweets']/($object['positive_tweets']+$object['negative_tweets'])*100) ?>% positive tweets</li>
-                        <li class="negative"><?php echo round($object['negative_tweets']/($object['positive_tweets']+$object['negative_tweets'])*100) ?>% negative tweets</li>
-                        <li class="neutral"><?php echo round(($object['total_tweets']-$object['positive_tweets']-$object['negative_tweets'])/$object['total_tweets']*100) ?>% neutral tweets</li>
+                        <li class="positive"><?php echo round($object['naive_bayesian']['positive']/$object['total_tweets']*100) ?>% positivity</li>
+                        <li class="negative"><?php echo round($object['naive_bayesian']['negative']/$object['total_tweets']*100) ?>% negativity</li>
                     </ul>
                 <?php endforeach ?>
             </div>
@@ -73,8 +72,10 @@ foreach ($objects as $key => $object) {
                         </thead>
                         
                         <tbody>
-                            <?php foreach ($object['tweets'] as $tweet): $rating = $tweet['sentiment']['rating']; ?>
-                                <tr style="background-color: <?php echo $rating > 0 ? '#eeffee' : ($rating < 0 ? '#ffeeee' : '#f8f8f8') ?>;">
+                            <?php foreach ($object['tweets'] as $tweet):
+                                $positivity = $tweet['sentiment']['naive_bayesian']['positive'];
+                                $negativity = $tweet['sentiment']['naive_bayesian']['negative']; ?>
+                                <tr style="background-color: <?php echo $positivity > $negativity ? '#eeffee' : ($positivity < $negativity ? '#ffeeee' : '#f8f8f8') ?>;">
                                     <td><?php echo $tweet['original_text'] ?></td>
                                 </tr>
                              <?php endforeach ?>

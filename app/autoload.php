@@ -12,6 +12,7 @@ $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
     'TweetEat' => $src,
     'Symfony'  => $vendor.'/symfony/src',
+    'DotClear' => $vendor.'/dotclear',
 ));
 
 $loader->registerPrefixes(array(

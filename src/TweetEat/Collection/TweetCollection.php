@@ -40,6 +40,9 @@ class TweetCollection
                 ),
                 array(
                     'sentiment' => array('$exists' => false)
+                ),
+                array(
+                    'sentiment.naive_bayesian' => array('$exists' => false)
                 )
             )
         ));
@@ -71,9 +74,6 @@ class TweetCollection
     {
         return $this->collection->find(array(
             'objects' => $objectId,
-            'sentiment.rating' => array(
-                '$ne' => 0,
-            ),
         ))->sort(array(
             '_id' => -1,
         ))->limit($limit);

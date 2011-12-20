@@ -13,3 +13,9 @@
 
 [processor]
     max_tweets = 1000
+
+[mysql]
+    username = ""
+    password = ""
+    database = ""
+    server = ""
