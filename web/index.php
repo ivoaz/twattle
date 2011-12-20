@@ -35,6 +35,7 @@ foreach ($objects as $key => $object) {
 
                     <ul class="nav">
                         <li class="active"><a href="/">Battle</a></li>
+                        <li><a href="#about">About</a></li>
                     </ul>
                 </div>
             </div>
