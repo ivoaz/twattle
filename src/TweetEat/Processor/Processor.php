@@ -70,7 +70,7 @@ class Processor
         // normalize text
         $tweet['normalized_text'] = $this->normalizer->normalize($tweet['original_text']);
 
-        if (!empty($tweet['objects'])) {
+        if (empty($tweet['objects'])) {
             // determine objects
             $tweet['objects'] = $this->objectDeterminator->determine($tweet['normalized_text']);
             if (empty($tweet['objects'])) {
