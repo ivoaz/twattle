@@ -55,10 +55,10 @@ foreach ($objects as $key => $object) {
             <div class="battle-stats">
                 <?php foreach ($objects as $object): ?>
                     <ul class="battle-sentiment unstyled">
+                        <li class="total"><?php echo $object['total_tweets'] ?></li>
                         <li class="positive"><?php echo round($object['positive_tweets']/($object['positive_tweets']+$object['negative_tweets'])*100) ?>% positive tweets</li>
                         <li class="negative"><?php echo round($object['negative_tweets']/($object['positive_tweets']+$object['negative_tweets'])*100) ?>% negative tweets</li>
                         <li class="neutral"><?php echo round(($object['total_tweets']-$object['positive_tweets']-$object['negative_tweets'])/$object['total_tweets']*100) ?>% neutral tweets</li>
-                        <li class="total"><?php echo $object['total_tweets'] ?> total tweets</li>
                     </ul>
                 <?php endforeach ?>
             </div>
