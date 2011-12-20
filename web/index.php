@@ -31,10 +31,11 @@ foreach ($objects as $key => $object) {
         <div class="topbar">
             <div class="topbar-inner">
                 <div class="container">
-                    <a class="brand" href="/">TweetEat</a>
+                    <a class="brand" href="/">TweetEat Battle</a>
 
                     <ul class="nav">
-                        <li class="active"><a href="/">Battle</a></li>
+                        <li<?php if (!isset($_GET['naive-bayes'])): ?> class="active"<?php endif ?>><a href="/">Using Keywords</a></li>
+			<li<?php if (isset($_GET['naive-bayes'])): ?> class="active"<?php endif ?>><a href="/?naive-bayes">Using Naive Bayes</a></li>
                         <li><a href="#about">About</a></li>
                     </ul>
                 </div>
@@ -56,8 +57,13 @@ foreach ($objects as $key => $object) {
                 <?php foreach ($objects as $object): ?>
                     <ul class="battle-sentiment unstyled">
                         <li class="total"><?php echo $object['total_tweets'] ?></li>
-                        <li class="positive"><?php echo round($object['naive_bayesian']['positive']/$object['total_tweets']*100) ?>% positivity</li>
-                        <li class="negative"><?php echo round($object['naive_bayesian']['negative']/$object['total_tweets']*100) ?>% negativity</li>
+                        <?php if (isset($_GET['naive-bayes'])): ?>
+                            <li class="positive"><?php echo round($object['naive_bayesian']['positive']/$object['total_tweets']*100) ?>% positivity</li>
+                            <li class="negative"><?php echo round($object['naive_bayesian']['negative']/$object['total_tweets']*100) ?>% negativity</li>
+                        <?php else: ?>
+                            <li class="positive"><?php echo round($object['positive_tweets']/($object['positive_tweets']+$object['negative_tweets'])*100) ?>% positive tweets</li>
+                            <li class="negative"><?php echo round($object['negative_tweets']/($object['positive_tweets']+$object['negative_tweets'])*100) ?>% negative tweets</li>
+                        <?php endif ?>
                     </ul>
                 <?php endforeach ?>
             </div>
