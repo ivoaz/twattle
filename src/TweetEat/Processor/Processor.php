@@ -47,6 +47,8 @@ class Processor
         $tweet['normalized_text'] = $this->normalizer->normalize($tweet['original_text']);
 
         $tweet['objects'] = $this->objectDeterminator->determine($tweet['normalized_text']);
+        
+        //eng check goes here
         if (empty($tweet['objects'])) {
             return false;
         }
