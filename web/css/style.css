@@ -12,10 +12,6 @@ body {
     vertical-align: middle;
 }
 
-.battle-stats {
-    margin-top: 10px;
-}
-
 .battle-sentiment {
     width: 468px;
     display: inline-block;
@@ -27,6 +23,11 @@ body {
 
 .battle-sentiment .negative {
     color: red;
+}
+
+.battle-sentiment .total {
+    font-size: 72px;
+    line-height: 72px;
 }
 
 .battle-tweets table {
