@@ -27,6 +27,16 @@ class Processor
      * @var NaiveBayesian
      */
     protected $naiveBayesian;
+    
+    /**
+     * @var engexp
+     */
+    protected $engexp;
+
+    /**
+     * @var notengexp
+     */
+    protected $notengexp;
 
     /**
      * @param Database $db
@@ -41,6 +51,12 @@ class Processor
         $this->objectDeterminator = $objectDeterminator;
         $this->sentimentAnalyser = $sentimentAnalyser;
         $this->naiveBayesian = $naiveBayesian;
+
+        // configure language checker
+        $patterns = array(" this ", " that ", " other ", " is ",  " the ", " are ", " he ", " at ", " we ", " can ", " do ", " or ", " and ", " to ");
+        $this->engexp = '/('.implode('|', $patterns).')/i'; 
+        $badpatterns = array("ž", "č", "ķ", "ā",  " foi ", " de ", " se ", "ī", "õ", "ū", "ē", "ŗ", "ļ", " voy ", " als ", " ik " ,"é", "ć", " er ");
+        $this->notengexp = '/('.implode('|',$badpatterns).')/i'; 
     }
 
     /**
@@ -60,6 +76,14 @@ class Processor
             if (empty($tweet['objects'])) {
                 return false;
             }
+        }
+
+        // check that language is accepted
+        if (!preg_match($this->engexp, $tweet['normalized_text'], $matches)) {
+            return false;
+        }
+        if (preg_match($this->notengexp, $tweet['normalized_text'], $matches)) {
+            return false;
         }
 
         // determine sentiment using keywords
