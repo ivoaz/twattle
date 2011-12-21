@@ -68,13 +68,23 @@ class TweetCollection
      * Finds latest tweets containing given object and determined sentiment
      *
      * @param string $objectId
+     * @param string $method
+     * @param int $limit
      * @return \MongoCursor
      */
-    public function findForBattlePage($objectId, $limit = 0)
+    public function findForBattlePage($objectId, $method, $limit = 0)
     {
-        return $this->collection->find(array(
+        $criteria = array(
             'objects' => $objectId,
-        ))->sort(array(
+        );
+
+        if ($method == 'rating') {
+            $criteria['sentiment.rating'] = array(
+                '$ne' => 0,
+            );
+        }
+
+        return $this->collection->find($criteria)->sort(array(
             '_id' => -1,
         ))->limit($limit);
     }
