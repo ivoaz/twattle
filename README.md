@@ -4,15 +4,14 @@ README
 What is Twattle?
 -----------------
 
-Twattle allows you to research the sentiment for brand or product.
-It is an academic project created by four Computer Science students in
-Web Science seminar at University of Latvia.
-
+Twattle allows you to research the sentiment for brand or product based on a tweets from http://twitter.com.
+It is an academic project created by four Computer Science students in Web Science seminar at the University of Latvia.
+The project is used as a Twattle site at http://twattle.tk.
 
 Requirements
 ------------
 
-Twattle requires PHP 5.3 or newer and MongoDB.
+Twattle requires PHP 5.3 or newer, MySQL and MongoDB.
 
 
 Installation
@@ -27,7 +26,7 @@ Clone submodules
     git submodule init
     git submodule update
 
-Copy the distributed config file and configure the database
+Copy the distributed config file and configure the databases
 
     cp app/config/config.ini.dist app/config/config.ini
 
@@ -53,30 +52,31 @@ Run the collector service
     php cli/collect.php
 
 
-Determining object
+Processing collected tweets
 ------------------
 
-Run the object determination script
+Processing tweets includes several operations - text normalization, object determination, language detection and sentiment analysis based on simple keywords method and Naive Bayesian method.
 
-    php cli/determine_object.php
+Before processing, make sure you have a lexicon in your mongodb database and statisical data for Naive Bayesian in your mysql database.
 
-
-Determining sentiment
----------------------
-
-Make sure you have a lexicon in your database.
 You can import default lexicon by running import script
 
     php cli/import_lexicon.php
 
-Run the sentiment determination script
+To start processing, run the processor script
 
-    php cli/determine_sentiment.php
+    php cli/process.php
 
-Viewing statistics
+
+Viewing statistics in console
 ------------------
 
 Run the statistics script
 
     php cli/stats.php
 
+
+Viewing battle page in a browser
+--------------------------------
+
+Configure your http server and open web/index.php in the browser.
