@@ -1,10 +1,10 @@
 <?php
 
-namespace TweetEat\Processor;
+namespace Twattle\Processor;
 
-use TweetEat\Determinator\ObjectDeterminator;
-use TweetEat\Determinator\SentimentDeterminator;
-use TweetEat\Normalizer\Normalizer;
+use Twattle\Determinator\ObjectDeterminator;
+use Twattle\Determinator\SentimentDeterminator;
+use Twattle\Normalizer\Normalizer;
 
 class Processor
 {

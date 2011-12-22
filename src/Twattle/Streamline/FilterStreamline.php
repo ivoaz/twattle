@@ -1,6 +1,6 @@
 <?php
 
-namespace TweetEat\Streamline;
+namespace Twattle\Streamline;
 
 class FilterStreamline extends \Phirehose
 {

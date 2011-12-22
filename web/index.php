@@ -2,7 +2,7 @@
 
 require_once(__DIR__.'/../app/bootstrap.php');
 
-use TweetEat\DependencyInjection\Container;
+use Twattle\DependencyInjection\Container;
 
 $container = new Container();
 
@@ -21,7 +21,7 @@ foreach ($objects as $key => $object) {
 <!doctype html>
 <html>
     <head>
-        <title>TweetEat - The battle of the brands</title>
+        <title>Twattle - Battle of the brands on the Twitter</title>
 
         <link rel="stylesheet" type="text/css" media="all" href="css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" media="all" href="css/style.css" />
@@ -31,7 +31,7 @@ foreach ($objects as $key => $object) {
         <div class="topbar">
             <div class="topbar-inner">
                 <div class="container">
-                    <a class="brand" href="/">TweetEat Battle</a>
+                    <a class="brand" href="/">Twattle</a>
 
                     <ul class="nav">
                         <li<?php if (!isset($_GET['naive-bayes'])): ?> class="active"<?php endif ?>><a href="/">Using Keywords</a></li>
@@ -43,7 +43,7 @@ foreach ($objects as $key => $object) {
         </div>
 
         <div class="container battle">
-            <h1>The battle of the brands<br /><small>Which will you tweet about?</small></h1>
+            <h1>Battle of the brands<br /><small>Which will you tweet about?</small></h1>
 
             <div class="battle-images">
                 <?php foreach ($objects as $object): ?>
@@ -102,16 +102,16 @@ foreach ($objects as $key => $object) {
             <footer>
                 <p>
                     <span class="twitter">
-                        <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://tweeteat.tk/" data-lang="en" data-size="large">Tweet</a>
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://twattle.tk/" data-lang="en" data-size="large">Tweet</a>
                         <script type="text/javascript">!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
                     </span>
 
                     <span class="facebook">
-                        <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Ftweeteat.tk&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=35&amp;appId=269258999789915" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:26px;" allowTransparency="true"></iframe>
+                        <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Ftwattle.tk&amp;send=false&amp;layout=standard&amp;width=450&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=35&amp;appId=269258999789915" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:26px;" allowTransparency="true"></iframe>
                     </span>
                 </p>
                 
-                <p>&copy; TweetEat 2011</p>
+                <p>&copy; Twattle 2011</p>
             </footer>
         </div>
     </body>

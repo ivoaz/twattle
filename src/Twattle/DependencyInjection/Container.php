@@ -1,6 +1,6 @@
 <?php
 
-namespace TweetEat\DependencyInjection;
+namespace Twattle\DependencyInjection;
 
 class Container extends \Pimple
 {
@@ -52,37 +52,37 @@ class Container extends \Pimple
 
         // register database
         $this['database'] = $this->share(function ($c) {
-            return new \TweetEat\Database\Mongo($c['mongodb']);
+            return new \Twattle\Database\Mongo($c['mongodb']);
         });
         
         // register normalizer
         $this['normalizer'] = $this->share(function ($c) {
-            return new \TweetEat\Normalizer\Normalizer();
+            return new \Twattle\Normalizer\Normalizer();
         });
         
         // register object determinator
         $this['object_determinator'] = $this->share(function ($c) {
-            return new \TweetEat\Determinator\ObjectDeterminator($c->getDatabase()->getObjectCollection());
+            return new \Twattle\Determinator\ObjectDeterminator($c->getDatabase()->getObjectCollection());
         });
         
         // register sentiment analyser
         $this['sentiment_analyser'] = $this->share(function ($c) {
-            return new \TweetEat\Analyser\KeywordSentimentAnalyser($c->getDatabase()->getLexiconCollection());
+            return new \Twattle\Analyser\KeywordSentimentAnalyser($c->getDatabase()->getLexiconCollection());
         });
 
         // register processor
         $this['processor'] = $this->share(function ($c) {
-            return new \TweetEat\Processor\Processor($c['normalizer'], $c['object_determinator'], $c['sentiment_analyser'], $c['naive_bayesian']);
+            return new \Twattle\Processor\Processor($c['normalizer'], $c['object_determinator'], $c['sentiment_analyser'], $c['naive_bayesian']);
         });
 
         // register collector
         $this['collector'] = $this->share(function ($c) {
-            return new \TweetEat\Collector\MongoCollector($c->getDatabase()->getTweetCollection());
+            return new \Twattle\Collector\MongoCollector($c->getDatabase()->getTweetCollection());
         });
 
         // register streamline
         $this['streamline'] = $this->share(function ($c) {
-            return new \TweetEat\Streamline\FilterStreamline($c['twitter.api_username'], $c['twitter.api_password'], $c['collector']);
+            return new \Twattle\Streamline\FilterStreamline($c['twitter.api_username'], $c['twitter.api_password'], $c['collector']);
         });
 
         // register naive bayesian
@@ -97,7 +97,7 @@ class Container extends \Pimple
     }
 
     /**
-     * @return TweetEat\Database\Mongo
+     * @return Twattle\Database\Mongo
      */
     public function getDatabase()
     {
@@ -105,7 +105,7 @@ class Container extends \Pimple
     }
 
     /**
-     * @return TweetEat\Processor\Processor
+     * @return Twattle\Processor\Processor
      */
     public function getProcessor()
     {
@@ -113,7 +113,7 @@ class Container extends \Pimple
     }
 
     /**
-     * @return TweetEat\Streamline\FilterStreamline
+     * @return Twattle\Streamline\FilterStreamline
      */
     public function getStreamline()
     {

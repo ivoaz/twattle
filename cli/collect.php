@@ -10,7 +10,7 @@ if (flock($lockFile, LOCK_EX|LOCK_NB, $wouldBlock) === false || $wouldBlock) {
 
 require_once(__DIR__.'/../app/bootstrap.php');
 
-use TweetEat\DependencyInjection\Container;
+use Twattle\DependencyInjection\Container;
 
 $container = new Container();
 

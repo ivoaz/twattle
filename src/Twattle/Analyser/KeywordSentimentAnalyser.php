@@ -1,6 +1,6 @@
 <?php
 
-namespace TweetEat\Analyser;
+namespace Twattle\Analyser;
 
 class KeywordSentimentAnalyser
 {

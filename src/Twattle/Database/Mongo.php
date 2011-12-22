@@ -1,8 +1,8 @@
 <?php
 
-namespace TweetEat\Database;
+namespace Twattle\Database;
 
-use TweetEat\Collection;
+use Twattle\Collection;
 
 class Mongo
 {

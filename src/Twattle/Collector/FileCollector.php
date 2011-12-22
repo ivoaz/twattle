@@ -1,6 +1,6 @@
 <?php
 
-namespace TweetEat\Collector;
+namespace Twattle\Collector;
 
 class FileCollector
 {

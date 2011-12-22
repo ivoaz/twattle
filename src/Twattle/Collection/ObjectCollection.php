@@ -1,6 +1,6 @@
 <?php
 
-namespace TweetEat\Collection;
+namespace Twattle\Collection;
 
 class ObjectCollection
 {

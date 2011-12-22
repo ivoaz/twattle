@@ -10,7 +10,7 @@ use Symfony\Component\ClassLoader\UniversalClassLoader;
 $loader = new UniversalClassLoader();
 
 $loader->registerNamespaces(array(
-    'TweetEat' => $src,
+    'Twattle' => $src,
     'Symfony'  => $vendor.'/symfony/src',
     'DotClear' => $vendor.'/dotclear',
 ));

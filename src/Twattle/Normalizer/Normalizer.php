@@ -1,6 +1,6 @@
 <?php
 
-namespace TweetEat\Normalizer;
+namespace Twattle\Normalizer;
 
 class Normalizer
 {

@@ -1,5 +1,5 @@
 [app]
-    name = TweetEat
+    name = Twattle
 
 [twitter]
     api_username = ""
@@ -9,7 +9,7 @@
     server = "localhost"
     username = ""
     password = ""
-    database = "tweeteat"
+    database = "twattle"
 
 [processor]
     max_tweets = 1000

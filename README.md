@@ -1,10 +1,10 @@
 README
 ======
 
-What is TweetEat?
+What is Twattle?
 -----------------
 
-TweetEat allows you to research the sentiment for brand or product.
+Twattle allows you to research the sentiment for brand or product.
 It is an academic project created by four Computer Science students in
 Web Science seminar at University of Latvia.
 
@@ -12,7 +12,7 @@ Web Science seminar at University of Latvia.
 Requirements
 ------------
 
-TweetEat requires PHP 5.3 or newer and MongoDB.
+Twattle requires PHP 5.3 or newer and MongoDB.
 
 
 Installation
@@ -20,7 +20,7 @@ Installation
 
 Clone the project
 
-    git clone git@github.com:ivoaz/tweeteat.git
+    git clone git@github.com:ivoaz/twattle.git
 
 Clone submodules
 

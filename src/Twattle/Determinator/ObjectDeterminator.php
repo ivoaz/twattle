@@ -1,6 +1,6 @@
 <?php
 
-namespace TweetEat\Determinator;
+namespace Twattle\Determinator;
 
 class ObjectDeterminator
 {

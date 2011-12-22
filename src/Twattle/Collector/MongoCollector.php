@@ -1,8 +1,8 @@
 <?php
 
-namespace TweetEat\Collector;
+namespace Twattle\Collector;
 
-use TweetEat\Collection\TweetCollection;
+use Twattle\Collection\TweetCollection;
 
 class MongoCollector
 {
